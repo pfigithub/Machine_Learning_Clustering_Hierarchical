@@ -21,3 +21,7 @@ pdf = pdf.dropna()
 pdf = pdf.reset_index(drop=True)
 print ("Shape of dataset after cleaning: ", pdf.size)
 pdf.head(5)
+
+# feature selection
+featureset = pdf[['engine_s',  'horsepow', 'wheelbas', 'width', 'length', 'curb_wgt', 'fuel_cap', 'mpg']]
+
