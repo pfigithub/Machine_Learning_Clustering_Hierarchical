@@ -57,4 +57,9 @@ k = 5
 clusters = fcluster(Z, k, criterion='maxclust')
 clusters
 
-
+# plot the dendrogram
+fig = pylab.figure(figsize=(18,50))
+def llf(id):
+    return '[%s %s %s]' % (pdf['manufact'][id], pdf['model'][id], int(float(pdf['type'][id])) )
+    
+dendro = hierarchy.dendrogram(Z,  leaf_label_func=llf, leaf_rotation=0, leaf_font_size =12, orientation = 'right')
