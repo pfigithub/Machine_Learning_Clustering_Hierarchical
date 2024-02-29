@@ -63,3 +63,23 @@ def llf(id):
     return '[%s %s %s]' % (pdf['manufact'][id], pdf['model'][id], int(float(pdf['type'][id])) )
     
 dendro = hierarchy.dendrogram(Z,  leaf_label_func=llf, leaf_rotation=0, leaf_font_size =12, orientation = 'right')
+
+# modeling by scikit-learn
+from sklearn.metrics.pairwise import euclidean_distances
+dist_matrix = euclidean_distances(feature_mtx,feature_mtx) 
+print(dist_matrix)
+Z_using_dist_matrix = hierarchy.linkage(dist_matrix, 'complete')
+
+# plot
+fig = pylab.figure(figsize=(18,50))
+def llf(id):
+    return '[%s %s %s]' % (pdf['manufact'][id], pdf['model'][id], int(float(pdf['type'][id])) )
+    
+dendro = hierarchy.dendrogram(Z_using_dist_matrix,  leaf_label_func=llf, leaf_rotation=0, leaf_font_size =12, orientation = 'right')
+
+# fit model
+agglom = AgglomerativeClustering(n_clusters = 6, linkage = 'complete')
+agglom.fit(dist_matrix)
+pdf['cluster_'] = agglom.labels_
+pdf.groupby(['cluster_','type'])['cluster_'].count()
+agg_cars = pdf.groupby(['cluster_','type'])['horsepow','engine_s','mpg','price'].mean()
