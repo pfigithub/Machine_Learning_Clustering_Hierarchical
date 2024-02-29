@@ -31,3 +31,30 @@ x = featureset.values #returns a numpy array
 min_max_scaler = MinMaxScaler()
 feature_mtx = min_max_scaler.fit_transform(x)
 feature_mtx [0:5]
+
+# modeling by scipy
+import scipy
+import pylab
+import scipy.cluster.hierarchy
+from scipy.cluster.hierarchy import fcluster
+
+leng = feature_mtx.shape[0]
+D = scipy.zeros([leng,leng])
+for i in range(leng):
+    for j in range(leng):
+        D[i,j] = scipy.spatial.distance.euclidean(feature_mtx[i], feature_mtx[j])
+
+
+Z = hierarchy.linkage(D, 'complete')
+
+
+max_d = 3
+clusters = fcluster(Z, max_d, criterion='distance')
+clusters
+
+
+k = 5
+clusters = fcluster(Z, k, criterion='maxclust')
+clusters
+
+
